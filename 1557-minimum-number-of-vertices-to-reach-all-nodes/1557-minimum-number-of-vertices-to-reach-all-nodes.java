@@ -1,0 +1,21 @@
+class Solution {
+    public List<Integer> findSmallestSetOfVertices(int n, List<List<Integer>> edges) {
+        List<Integer> vertices = new ArrayList();
+        
+        //mark the vertex which is reachable from another vertex, 
+        boolean[] reachableVertics = new boolean[n];
+        
+        for(List<Integer> edge : edges){
+            reachableVertics[edge.get(1)] = true;
+        }
+        
+        //if vertices is not reachable
+        for(int vertex = 0; vertex < n; vertex++){
+            if(!reachableVertics[vertex]){
+                vertices.add(vertex);
+            }
+        }
+        
+        return vertices;  
+    }
+}
