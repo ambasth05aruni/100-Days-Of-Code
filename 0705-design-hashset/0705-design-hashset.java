@@ -1,7 +1,7 @@
-class MyHashSet {
-  List<Integer> set;
-    public MyHashSet() {
-        set = new ArrayList<Integer>();  
+class MyHashSet{
+    List<Integer> set;
+   public MyHashSet() {
+       set = new ArrayList<Integer>();  
     }
     
     public void add(int key) {
