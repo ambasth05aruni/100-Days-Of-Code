@@ -1,0 +1,41 @@
+class Solution {
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
+         Map<Integer, Double>[] graph = new Map[n];
+        for(int i = 0; i < edges.length; i++) {
+            int[] edge = edges[i];
+            if(graph[edge[0]] == null) graph[edge[0]] = new HashMap<>();
+            if(graph[edge[1]] == null) graph[edge[1]] = new HashMap<>();
+
+            graph[edge[0]].put(edge[1], succProb[i]);
+            graph[edge[1]].put(edge[0], succProb[i]);
+        }
+
+        // Dijkstra
+        double[] maxProb = new double[n];
+        boolean[] visited = new boolean[n];
+        maxProb[start] = 1;
+
+        // compare by current max probability, descending
+        // prod difference x 100000 to ensure precision
+        PriorityQueue<Integer> que = new PriorityQueue<Integer>((a, b) -> (int)((maxProb[b] - maxProb[a]) * 100000));
+        que.add(start);
+
+        while(!que.isEmpty()) {
+            int cur = que.poll();
+            if(visited[cur]) continue;
+            visited[cur] = true;
+
+            if(graph[cur] == null || graph[cur].isEmpty()) continue;
+            for(int next : graph[cur].keySet()) {
+                if(visited[next]) continue;
+                double prob = maxProb[cur] * graph[cur].get(next);
+                maxProb[next] = Math.max(maxProb[next], prob);
+                // to prevent duplicating nodes in queue
+                if(que.contains(next)) que.remove(next);
+                que.add(next);
+            }
+        }
+
+        return maxProb[end]; 
+    }
+}
